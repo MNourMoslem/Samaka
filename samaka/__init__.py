@@ -34,7 +34,7 @@ def find_best_move(board : chess.Board, model : nn.Module, maximizing_player : i
 
   return best_move, best_val
 
-def play_game(model : nn.Module, board : chess.Board, until_num_move : int = -1):
+def play_game(model : nn.Module, board : chess.Board, until_num_move : int = -1, device : torch.device = None):
   if until_num_move == -1:
     until_end = True
   else:
@@ -43,12 +43,12 @@ def play_game(model : nn.Module, board : chess.Board, until_num_move : int = -1)
 
   if until_end:
     while not board.is_game_over():
-      best_move, _ = find_best_move(board, model, board.turn)
+      best_move, _ = find_best_move(board, model, board.turn, device)
       board.push(best_move)
       num_move += 1
   else:
     for _ in range(until_num_move):
-      best_move, _ = find_best_move(board, model, board.turn)
+      best_move, _ = find_best_move(board, model, board.turn, device)
       board.push(best_move)
       num_move += 1
 
