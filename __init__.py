@@ -1,1 +1,1 @@
-from samaka import *
+from .samaka import *
