@@ -6,13 +6,14 @@ from .tools import *
 
 def find_best_move(board : chess.Board, model : nn.Module, maximizing_player : int):
   best_move = None
-  
+  device = model.device
+
   if maximizing_player:
     best_val = float('-inf')
     
     for move in board.legal_moves:
       board.push(move)
-      tboard = board_to_tensor(board)
+      tboard = board_to_tensor(board, device)
       val = model(tboard)
       if val > best_val:
         best_val = val
@@ -24,7 +25,7 @@ def find_best_move(board : chess.Board, model : nn.Module, maximizing_player : i
     
     for move in board.legal_moves:
       board.push(move)
-      tboard = board_to_tensor(board)
+      tboard = board_to_tensor(board, device)
       val = model(tboard)
       if val < best_val:
         best_val = val
@@ -42,12 +43,12 @@ def play_game(model : nn.Module, board : chess.Board, until_num_move : int = -1)
 
   if until_end:
     while not board.is_game_over():
-      best_move, best_val = find_best_move(board, model, board.turn)
+      best_move, _ = find_best_move(board, model, board.turn)
       board.push(best_move)
       num_move += 1
   else:
     for _ in range(until_num_move):
-      best_move, best_val = find_best_move(board, model, board.turn)
+      best_move, _ = find_best_move(board, model, board.turn)
       board.push(best_move)
       num_move += 1
 
