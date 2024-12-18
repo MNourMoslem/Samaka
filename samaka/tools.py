@@ -19,8 +19,8 @@ piece_to_number = {
     chess.KING: 6,
 }
 
-def board_to_tensor(board):
-    tensor = torch.zeros(64, dtype=torch.int64)
+def board_to_tensor(board, device = None):
+    tensor = torch.zeros(64, dtype=torch.int64, device=device)
 
     for square in chess.SQUARES:
         piece = board.piece_at(square)
