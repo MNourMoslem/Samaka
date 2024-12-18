@@ -32,3 +32,24 @@ def find_best_move(board : chess.Board, model : nn.Module, maximizing_player : i
       board.pop()
 
   return best_move, best_val
+
+def play_game(model : nn.Module, board : chess.Board, until_num_move : int = -1):
+  if until_num_move == -1:
+    until_end = True
+  else:
+    until_end = False
+  num_move = 0
+
+  if until_end:
+    while not board.is_game_over():
+      best_move, best_val = find_best_move(board, model, board.turn)
+      board.push(best_move)
+      num_move += 1
+  else:
+    for _ in range(until_num_move):
+      best_move, best_val = find_best_move(board, model, board.turn)
+      board.push(best_move)
+      num_move += 1
+
+  game_result = board.result()
+  return board, num_move, game_result
