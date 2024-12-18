@@ -1,12 +1,12 @@
 import chess
+import torch
 import torch.nn as nn
 
 from .model import *
 from .tools import *
 
-def find_best_move(board : chess.Board, model : nn.Module, maximizing_player : int):
+def find_best_move(board : chess.Board, model : nn.Module, maximizing_player : int, device : torch.device = None):
   best_move = None
-  device = model.device
 
   if maximizing_player:
     best_val = float('-inf')
