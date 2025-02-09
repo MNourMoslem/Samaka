@@ -14,7 +14,7 @@ def find_move_epsilon(board : nc.Board, model : nn.Module, maximizing_player : i
 
     if epsilon > 0 and random_move < epsilon:
         best_move = random.choice(legal_moves)
-        board.step(best_move)
+        board._makemove(best_move)
         tboard = board_to_tensor(board, device)
         best_val = model(tboard)    
         board.undo()
@@ -24,7 +24,7 @@ def find_move_epsilon(board : nc.Board, model : nn.Module, maximizing_player : i
         best_val = float('-inf')
         
         for move in legal_moves:
-            board.step(move)
+            board._makemove(move)
             tboard = board_to_tensor(board, device)
             val = model(tboard)
             if val > best_val:
@@ -36,7 +36,7 @@ def find_move_epsilon(board : nc.Board, model : nn.Module, maximizing_player : i
         best_val = float('inf')
         
         for move in legal_moves:
-            board.step(move)
+            board._makemove(move)
             tboard = board_to_tensor(board, device)
             val = model(tboard)
             if val < best_val:
